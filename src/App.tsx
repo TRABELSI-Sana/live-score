@@ -77,27 +77,6 @@ export default function App() {
             </header>
 
             <main className="content">
-                <aside className="infoPanel">
-                    <h1>LiveFoot – Scores de football en direct</h1>
-                    <p>Suivez les matchs du jour en temps réel : scores, buts et événements.</p>
-                    <p>Compétitions populaires : Ligue 1, Premier League, Bundesliga, Serie A, Liga...</p>
-                    <p>
-                        Découvrez rapidement les rencontres en cours, les statuts des matchs et les faits
-                        marquants.
-                    </p>
-                    <ul>
-                        <li>Tableau clair des scores et minutes de jeu.</li>
-                        <li>Suivi des cartons, buts et temps additionnel.</li>
-                        <li>Informations mises à jour en continu.</li>
-                    </ul>
-                    <div className="infoLinks">
-                        <a href="/about.html">À propos</a>
-                        <a href="/privacy.html">Politique de confidentialité</a>
-                        <a href="/terms.html">Conditions</a>
-                        <a href="/contact.html">Contact</a>
-                    </div>
-                </aside>
-
                 <section className="board">
                     {grouped.length === 0 ? (
                         <div className="empty">
