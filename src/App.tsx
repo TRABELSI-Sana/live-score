@@ -57,6 +57,13 @@ function parseMinute(t: unknown): number {
     return Number.isFinite(base) ? base + added / 10 : 999;
 }
 
+function getTeamBySide(match: {home?: {name?: string; logo?: string}; away?: {name?: string; logo?: string}}, side?: unknown) {
+    const normalized = norm(side);
+    if (normalized === "home") return match.home;
+    if (normalized === "away") return match.away;
+    return undefined;
+}
+
 export default function App() {
     const {grouped} = useLiveBoard();
 
@@ -113,7 +120,9 @@ export default function App() {
 
                                         const status = m.status ?? "";
                                         const isUpcoming = UPCOMING_STATUSES.has(status);
-                                        const scoreText = m.scores?.score ?? (isUpcoming ? "-" : "0 : 0");
+                                        const scoreText = isUpcoming
+                                            ? m.scheduled ?? "--:--"
+                                            : m.scores?.score ?? "0 : 0";
 
                                         return (
                                             <div key={m.id ?? idx} className="match">
@@ -163,6 +172,31 @@ export default function App() {
                                                     <div className="events">
                                                         {events.map((e, eventIdx) => (
                                                             <div key={String(e.id ?? eventIdx)} className="eventRow">
+                                                                <span className="eventTeam">
+                                                                    {(() => {
+                                                                        const team = getTeamBySide(m, e.home_away);
+                                                                        if (team?.logo) {
+                                                                            return (
+                                                                                <img
+                                                                                    className="eventTeamLogo"
+                                                                                    src={team.logo}
+                                                                                    alt={team.name ?? "Team"}
+                                                                                    loading="lazy"
+                                                                                    onError={(err) => {
+                                                                                        (
+                                                                                            err.currentTarget as HTMLImageElement
+                                                                                        ).style.display = "none";
+                                                                                    }}
+                                                                                />
+                                                                            );
+                                                                        }
+                                                                        return (
+                                                                            <span className="eventTeamName">
+                                                                                {team?.name ?? ""}
+                                                                            </span>
+                                                                        );
+                                                                    })()}
+                                                                </span>
                                                                 <span className="eventMinute">
                                                                     {e.time ? `${e.time}'` : ""}
                                                                 </span>
