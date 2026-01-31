@@ -91,10 +91,10 @@ export default function App() {
                         <li>Informations mises à jour en continu.</li>
                     </ul>
                     <div className="infoLinks">
-                        <a href="#apropos">À propos</a>
-                        <a href="#confidentialite">Politique de confidentialité</a>
-                        <a href="#conditions">Conditions</a>
-                        <a href="#contact">Contact</a>
+                        <a href="/about.html">À propos</a>
+                        <a href="/privacy.html">Politique de confidentialité</a>
+                        <a href="/terms.html">Conditions</a>
+                        <a href="/contact.html">Contact</a>
                     </div>
                 </aside>
 
@@ -117,17 +117,16 @@ export default function App() {
                                         const events = uniqBy(
                                             (m.lastEvents ?? []).filter((e) => {
                                                 const ev = (e.event ?? "").toUpperCase();
-                                                return Boolean(e.player) && !ev.includes("SUB");
+                                                return Boolean(e.player) && Boolean(e.time) && !ev.includes("SUB");
                                             }),
-                                            (e) => {
-                                                const ha = norm(e.home_away);
-                                                const minute = String(parseMinute(e.time));
-                                                const ev = normEvent(e.event);
-                                                const player = normPlayer(e.player);
-                                                return player
-                                                    ? `${ha}|${minute}|${ev}|${player}`
-                                                    : `${ha}|${minute}|${ev}`;
-                                            }
+                                            (e) =>
+                                                String(e.id ?? "") ||
+                                                [
+                                                    norm(e.home_away),
+                                                    String(parseMinute(e.time)),
+                                                    normEvent(e.event),
+                                                    normPlayer(e.player),
+                                                ].join("|")
                                         )
                                             .slice()
                                             .sort((a, b) => parseMinute(b.time) - parseMinute(a.time))
