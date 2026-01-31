@@ -197,48 +197,46 @@ html, body {
   color: #222;
 }
 
-.events {
+.eventsGrid {
   margin-top: 10px;
   display: grid;
-  gap: 6px;
-  justify-content: center;
+  grid-template-columns: minmax(0, 1fr) 28px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
 }
 
-.eventRow {
+.eventsSpacer {
+  height: 1px;
+}
+
+.eventsColumn {
   display: grid;
-  grid-template-columns: minmax(0, 110px) 40px 18px 1fr;
-  gap: 8px;
-  align-items: center;
-  font-size: 12px;
-  color: var(--muted);
-  max-width: 320px;
-}
-
-.eventTeam {
-  display: flex;
-  align-items: center;
   gap: 6px;
   min-width: 0;
 }
 
-.eventTeamLogo {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  border: 1px solid var(--border);
-  object-fit: contain;
-  background: var(--soft);
+.eventRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--muted);
+  min-width: 0;
 }
 
-.eventTeamName {
-  font-size: 11px;
-  color: #3a3a3a;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.eventRowHome {
+  justify-content: flex-end;
+  text-align: right;
+  flex-direction: row-reverse;
+}
+
+.eventRowAway {
+  justify-content: flex-start;
+  text-align: left;
 }
 
 .eventMinute {
+  min-width: 34px;
   text-align: right;
   font-weight: 600;
   color: #222;
@@ -251,6 +249,9 @@ html, body {
 .eventPlayer {
   text-align: left;
   color: #222;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .empty {
@@ -303,11 +304,20 @@ html, body {
     min-width: 140px;
   }
 
-  .events {
+  .eventsGrid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .eventsSpacer {
+    display: none;
+  }
+
+  .eventsColumn {
     justify-items: center;
   }
 
-  .eventRow {
-    grid-template-columns: minmax(0, 90px) 36px 18px 1fr;
+  .eventRowHome {
+    flex-direction: row;
   }
 }

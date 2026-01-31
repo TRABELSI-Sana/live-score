@@ -57,13 +57,6 @@ function parseMinute(t: unknown): number {
     return Number.isFinite(base) ? base + added / 10 : 999;
 }
 
-function getTeamBySide(match: {home?: {name?: string; logo?: string}; away?: {name?: string; logo?: string}}, side?: unknown) {
-    const normalized = norm(side);
-    if (normalized === "home") return match.home;
-    if (normalized === "away") return match.away;
-    return undefined;
-}
-
 export default function App() {
     const {grouped} = useLiveBoard();
 
@@ -117,6 +110,8 @@ export default function App() {
                                             .slice()
                                             .sort((a, b) => parseMinute(b.time) - parseMinute(a.time))
                                             .slice(0, 4);
+                                        const homeEvents = events.filter((e) => norm(e.home_away) === "home");
+                                        const awayEvents = events.filter((e) => norm(e.home_away) === "away");
 
                                         const status = m.status ?? "";
                                         const isUpcoming = UPCOMING_STATUSES.has(status);
@@ -168,42 +163,37 @@ export default function App() {
                                                 <div className="matchMeta">
                                                     {statusLabel(m.status, m.time, m.scheduled)}
                                                 </div>
-                                                {!isUpcoming && events.length > 0 ? (
-                                                    <div className="events">
-                                                        {events.map((e, eventIdx) => (
-                                                            <div key={String(e.id ?? eventIdx)} className="eventRow">
-                                                                <span className="eventTeam">
-                                                                    {(() => {
-                                                                        const team = getTeamBySide(m, e.home_away);
-                                                                        if (team?.logo) {
-                                                                            return (
-                                                                                <img
-                                                                                    className="eventTeamLogo"
-                                                                                    src={team.logo}
-                                                                                    alt={team.name ?? "Team"}
-                                                                                    loading="lazy"
-                                                                                    onError={(err) => {
-                                                                                        (
-                                                                                            err.currentTarget as HTMLImageElement
-                                                                                        ).style.display = "none";
-                                                                                    }}
-                                                                                />
-                                                                            );
-                                                                        }
-                                                                        return (
-                                                                            <span className="eventTeamName">
-                                                                                {team?.name ?? ""}
-                                                                            </span>
-                                                                        );
-                                                                    })()}
-                                                                </span>
-                                                                <span className="eventMinute">
-                                                                    {e.time ? `${e.time}'` : ""}
-                                                                </span>
-                                                                <span className="eventIcon">{icon(e.event)}</span>
-                                                                <span className="eventPlayer">{e.player ?? ""}</span>
-                                                            </div>
-                                                        ))}
+                                                {!isUpcoming && (homeEvents.length > 0 || awayEvents.length > 0) ? (
+                                                    <div className="eventsGrid">
+                                                        <div className="eventsColumn eventsHome">
+                                                            {homeEvents.map((e, eventIdx) => (
+                                                                <div
+                                                                    key={String(e.id ?? eventIdx)}
+                                                                    className="eventRow eventRowHome"
+                                                                >
+                                                                    <span className="eventMinute">
+                                                                        {e.time ? `${e.time}'` : ""}
+                                                                    </span>
+                                                                    <span className="eventIcon">{icon(e.event)}</span>
+                                                                    <span className="eventPlayer">{e.player ?? ""}</span>
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                        <div className="eventsSpacer" aria-hidden="true"/>
+                                                        <div className="eventsColumn eventsAway">
+                                                            {awayEvents.map((e, eventIdx) => (
+                                                                <div
+                                                                    key={String(e.id ?? eventIdx)}
+                                                                    className="eventRow eventRowAway"
+                                                                >
+                                                                    <span className="eventMinute">
+                                                                        {e.time ? `${e.time}'` : ""}
+                                                                    </span>
+                                                                    <span className="eventIcon">{icon(e.event)}</span>
+                                                                    <span className="eventPlayer">{e.player ?? ""}</span>
+                                                                </div>
+                                                            ))}
+                                                        </div>
                                                     </div>
                                                 ) : null}
                                             </div>
