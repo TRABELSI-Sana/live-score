@@ -179,7 +179,7 @@ export default function App() {
                                                                 </div>
                                                             ))}
                                                         </div>
-                                                        <div className="eventsSpacer" aria-hidden="true"/>
+                                                        <div className="eventsCenter" aria-hidden="true"/>
                                                         <div className="eventsColumn eventsAway">
                                                             {awayEvents.map((e, eventIdx) => (
                                                                 <div
