@@ -1,12 +1,14 @@
 import "./App.css";
 import {useLiveBoard} from "./hooks/useLiveBoard";
 
+const UPCOMING_STATUSES = new Set(["NOT STARTED", "SCHEDULED"]);
+
 function statusLabel(status?: string, time?: string, scheduled?: string) {
     if (!status) return scheduled ?? "--:--";
     if (status === "IN PLAY" || status === "ADDED TIME") return time ? `${time}'` : "EN COURS";
     if (status === "HALF TIME BREAK") return "MT";
     if (status === "FINISHED") return "TERMINÉ";
-    if (status === "NOT STARTED" || status === "SCHEDULED") return scheduled ?? "À VENIR";
+    if (UPCOMING_STATUSES.has(status)) return scheduled ?? "À VENIR";
     return status;
 }
 
@@ -75,6 +77,27 @@ export default function App() {
             </header>
 
             <main className="content">
+                <aside className="infoPanel">
+                    <h1>LiveFoot – Scores de football en direct</h1>
+                    <p>Suivez les matchs du jour en temps réel : scores, buts et événements.</p>
+                    <p>Compétitions populaires : Ligue 1, Premier League, Bundesliga, Serie A, Liga...</p>
+                    <p>
+                        Découvrez rapidement les rencontres en cours, les statuts des matchs et les faits
+                        marquants.
+                    </p>
+                    <ul>
+                        <li>Tableau clair des scores et minutes de jeu.</li>
+                        <li>Suivi des cartons, buts et temps additionnel.</li>
+                        <li>Informations mises à jour en continu.</li>
+                    </ul>
+                    <div className="infoLinks">
+                        <a href="#apropos">À propos</a>
+                        <a href="#confidentialite">Politique de confidentialité</a>
+                        <a href="#conditions">Conditions</a>
+                        <a href="#contact">Contact</a>
+                    </div>
+                </aside>
+
                 <section className="board">
                     {grouped.length === 0 ? (
                         <div className="empty">
@@ -94,19 +117,25 @@ export default function App() {
                                         const events = uniqBy(
                                             (m.lastEvents ?? []).filter((e) => {
                                                 const ev = (e.event ?? "").toUpperCase();
-                                                return !ev.includes("SUB");
+                                                return Boolean(e.player) && !ev.includes("SUB");
                                             }),
                                             (e) => {
                                                 const ha = norm(e.home_away);
                                                 const minute = String(parseMinute(e.time));
                                                 const ev = normEvent(e.event);
                                                 const player = normPlayer(e.player);
-                                                return player ? `${ha}|${minute}|${ev}|${player}` : `${ha}|${minute}|${ev}`;
+                                                return player
+                                                    ? `${ha}|${minute}|${ev}|${player}`
+                                                    : `${ha}|${minute}|${ev}`;
                                             }
                                         )
                                             .slice()
                                             .sort((a, b) => parseMinute(b.time) - parseMinute(a.time))
                                             .slice(0, 4);
+
+                                        const status = m.status ?? "";
+                                        const isUpcoming = UPCOMING_STATUSES.has(status);
+                                        const scoreText = m.scores?.score ?? (isUpcoming ? "-" : "0 : 0");
 
                                         return (
                                             <div key={m.id ?? idx} className="match">
@@ -128,7 +157,9 @@ export default function App() {
                                                         )}
                                                         <span>{m.home?.name ?? "Home"}</span>
                                                     </div>
-                                                    <div className="scoreBox">{m.scores?.score ?? "0 : 0"}</div>
+                                                    <div className={`scoreBox ${isUpcoming ? "scoreBoxUpcoming" : ""}`}>
+                                                        {scoreText}
+                                                    </div>
                                                     <div className="team teamAway">
                                                         <span>{m.away?.name ?? "Away"}</span>
                                                         {m.away?.logo ? (
@@ -150,7 +181,7 @@ export default function App() {
                                                 <div className="matchMeta">
                                                     {statusLabel(m.status, m.time, m.scheduled)}
                                                 </div>
-                                                {events.length > 0 ? (
+                                                {!isUpcoming && events.length > 0 ? (
                                                     <div className="events">
                                                         {events.map((e, eventIdx) => (
                                                             <div key={String(e.id ?? eventIdx)} className="eventRow">
