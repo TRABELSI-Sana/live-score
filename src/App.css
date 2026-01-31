@@ -1,0 +1,336 @@
+:root {
+  --bg: #0b1220;
+  --panel: rgba(255, 255, 255, 0.06);
+  --panel2: rgba(255, 255, 255, 0.08);
+  --border: rgba(255, 255, 255, 0.10);
+  --text: rgba(255, 255, 255, 0.92);
+  --muted: rgba(255, 255, 255, 0.68);
+  --muted2: rgba(255, 255, 255, 0.52);
+  --ok: #22c55e;
+  --ko: #f97316;
+
+  --shadow: 0 10px 30px rgba(0,0,0,0.25);
+  --radius: 16px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100%;
+  color: var(--text);
+  background: radial-gradient(1200px 600px at 20% 0%, #152545 0%, var(--bg) 55%, #070b14 100%);
+}
+
+body {
+  display: flex;
+  justify-content: center;
+}
+
+.app {
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 18px 24px 28px;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+/* ===== Header ===== */
+.appHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  background: linear-gradient(180deg, var(--panel2), var(--panel));
+  border-radius: 14px;
+  backdrop-filter: blur(10px);
+}
+
+.brandTitle {
+  font-weight: 800;
+  font-size: 18px;
+  letter-spacing: 0.2px;
+}
+
+.brandSubtitle {
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* ===== Status pill ===== */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  padding: 8px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(0,0,0,0.18);
+  color: var(--muted);
+  user-select: none;
+}
+
+.pillDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--ko);
+  box-shadow: 0 0 0 3px rgba(249,115,22,0.12);
+}
+
+.pillOk { color: rgba(255,255,255,0.9); }
+.pillOk .pillDot {
+  background: var(--ok);
+  box-shadow: 0 0 0 3px rgba(34,197,94,0.12);
+}
+
+.pillKo { color: rgba(255,255,255,0.85); }
+
+/* ===== Sections ===== */
+.section {
+  margin-top: 16px;
+  width: 100%;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin: 14px 2px 10px;
+}
+
+.sectionTitle {
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: 0.15px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(0,0,0,0.18);
+}
+
+.sectionCount {
+  font-size: 12px;
+  color: var(--muted2);
+}
+
+/* ===== Cards grid ===== */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(320px, 1fr));
+  gap: 12px;
+  justify-content: center;
+}
+
+.cards > * {
+  max-width: 440px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* ===== Card ===== */
+.card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.04));
+  padding: 12px;
+  box-shadow: var(--shadow);
+}
+
+.meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.kickoff {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.status {
+  font-size: 12px;
+  font-weight: 800;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(0,0,0,0.22);
+}
+
+.main {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: start;
+}
+
+.teams { display: grid; gap: 8px; }
+
+.teamRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo, .logoPlaceholder {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.10);
+}
+
+.logo {
+  object-fit: contain;
+  padding: 2px;
+}
+
+.teamName {
+  font-weight: 800;
+  font-size: 14px;
+  line-height: 1.15;
+}
+
+.score {
+  text-align: right;
+  padding-left: 10px;
+}
+
+.scoreValue {
+  font-weight: 900;
+  font-size: 18px;
+  letter-spacing: 0.2px;
+}
+
+.scoreHint {
+  margin-top: 2px;
+  font-size: 11px;
+  color: var(--muted2);
+}
+
+/* ===== Events ===== */
+.events {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(255,255,255,0.12);
+  display: grid;
+  gap: 6px;
+}
+
+/* ✅ une seule définition : grid stable */
+.eventRow {
+  display: grid;
+  grid-template-columns: 34px 140px 20px 1fr; /* minute | team | icon | player */
+  align-items: center;
+  gap: 8px;
+  padding: 3px 0;
+  font-size: 13px;
+  color: rgba(255,255,255,0.86);
+}
+
+.eventMinute {
+  opacity: 0.85;
+  text-align: right;
+  color: var(--muted);
+}
+
+.eventTeam {
+  font-size: 12px;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.eventTeam--home {
+  color: #7CFC98;
+  background: rgba(124, 252, 152, 0.12);
+  border: 1px solid rgba(124, 252, 152, 0.18);
+}
+
+.eventTeam--away {
+  color: #FFD27D;
+  background: rgba(255, 210, 125, 0.12);
+  border: 1px solid rgba(255, 210, 125, 0.18);
+}
+
+.eventIcon { text-align: center; }
+
+.eventPlayer {
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.eventEmpty {
+  font-size: 12px;
+  color: var(--muted2);
+  padding: 2px 0;
+}
+
+/* ===== Empty state ===== */
+.empty {
+  margin-top: 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: rgba(255,255,255,0.05);
+  padding: 18px;
+}
+
+.emptyTitle {
+  font-weight: 900;
+  font-size: 14px;
+}
+
+.emptyHint {
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 1100px) {
+  .cards { grid-template-columns: repeat(2, minmax(320px, 1fr)); }
+}
+
+@media (max-width: 720px) {
+  .app { padding: 14px 14px 20px; }
+  .cards { grid-template-columns: 1fr; }
+  .eventRow { grid-template-columns: 34px 120px 20px 1fr; }
+}
+
+.sectionTitle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: 0.15px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(0,0,0,0.18);
+}
+
+.sectionCountry {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 999px;
+  color: rgba(255,255,255,0.75);
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.18);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
