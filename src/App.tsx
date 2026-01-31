@@ -72,9 +72,47 @@ export default function App() {
                 </div>
             </header>
 
+            <section className="infoSection">
+                <div className="infoHeader">
+                    <h1>Suivi des scores en direct</h1>
+                    <p>
+                        Live Scores propose un tableau clair pour suivre les rencontres en cours, les scores
+                        actualisés et les principaux événements du match (buts, cartons, temps additionnel).
+                    </p>
+                </div>
+                <div className="infoGrid">
+                    <div className="infoCard">
+                        <h2>Ce que vous voyez</h2>
+                        <ul>
+                            <li>Scores mis à jour automatiquement pendant le match.</li>
+                            <li>Résumé rapide des événements importants par équipe.</li>
+                            <li>Liste des compétitions avec le nombre de rencontres actives.</li>
+                        </ul>
+                    </div>
+                    <div className="infoCard">
+                        <h2>Comment ça marche</h2>
+                        <p>
+                            Les données proviennent de flux sportifs tiers et sont rafraîchies en continu pour
+                            afficher l'état du match, le minuteur et les derniers faits marquants.
+                        </p>
+                    </div>
+                    <div className="infoCard">
+                        <h2>À retenir</h2>
+                        <p>
+                            Les horaires et événements peuvent évoluer rapidement. Si un match n'apparaît pas,
+                            rafraîchissez la page ou revenez un peu plus tard.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
             {grouped.length === 0 ? (
                 <div className="empty">
                     <div className="emptyTitle">Aucun match pour le moment</div>
+                    <div className="emptyHint">
+                        Revenez plus tard pour découvrir les prochaines rencontres en direct et leurs
+                        statistiques essentielles.
+                    </div>
                 </div>
             ) : (
                 grouped.map(({comp, list}) => (
