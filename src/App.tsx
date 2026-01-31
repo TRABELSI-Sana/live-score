@@ -64,11 +64,13 @@ export default function App() {
         <div className="app">
             <header className="appHeader">
                 <div className="brand">
-                    <div className="brandTitle">Live Scores</div>
+                    <div className="brandTitle">LiveFoot</div>
+                    <div className="brandSubtitle">Scores et événements en direct</div>
                 </div>
 
                 <div className={`pill ${connected ? "pillOk" : "pillKo"}`}>
                     <span className="pillDot"/>
+                    <span>{connected ? "Flux connecté" : "Flux en attente"}</span>
                 </div>
             </header>
 
@@ -76,7 +78,7 @@ export default function App() {
                 <div className="infoHeader">
                     <h1>Suivi des scores en direct</h1>
                     <p>
-                        Live Scores propose un tableau clair pour suivre les rencontres en cours, les scores
+                        LiveFoot propose un tableau clair pour suivre les rencontres en cours, les scores
                         actualisés et les principaux événements du match (buts, cartons, temps additionnel).
                     </p>
                 </div>
@@ -112,6 +114,10 @@ export default function App() {
                     <div className="emptyHint">
                         Revenez plus tard pour découvrir les prochaines rencontres en direct et leurs
                         statistiques essentielles.
+                    </div>
+                    <div className="emptyHint">
+                        En attendant, consultez nos sections d'explications et nos conseils pour suivre les
+                        championnats majeurs en temps réel.
                     </div>
                 </div>
             ) : (
@@ -237,6 +243,63 @@ export default function App() {
                     </section>
                 ))
             )}
+
+            <section className="editorialSection" aria-labelledby="editorial-title">
+                <div className="editorialHeader">
+                    <h2 id="editorial-title">Analyse, calendrier et suivi des compétitions</h2>
+                    <p>
+                        LiveFoot complète les scores en direct avec des repères simples : calendrier du jour,
+                        suivi des grandes compétitions et explications sur les statuts des matchs. Cette
+                        section éditoriale est toujours visible pour vous permettre de retrouver les infos
+                        essentielles, même lorsque les matchs ne sont pas encore lancés.
+                    </p>
+                </div>
+
+                <div className="editorialGrid">
+                    <article className="editorialCard">
+                        <h3>Calendrier du jour</h3>
+                        <p>
+                            Retrouvez les horaires des rencontres à venir et gardez un œil sur les débuts de
+                            match. Les horaires affichés sont ajustés selon la compétition et les fuseaux
+                            horaires disponibles.
+                        </p>
+                    </article>
+                    <article className="editorialCard">
+                        <h3>Événements clés</h3>
+                        <p>
+                            Buts, cartons, temps additionnel : nous mettons en avant les actions majeures pour
+                            comprendre l'évolution du score en un coup d'œil.
+                        </p>
+                    </article>
+                    <article className="editorialCard">
+                        <h3>Compétitions suivies</h3>
+                        <ul>
+                            <li>Ligue 1, Premier League, La Liga, Serie A</li>
+                            <li>Ligue des Champions, Ligue Europa, compétitions nationales</li>
+                            <li>Suivi des rencontres locales en fonction de la disponibilité des données</li>
+                        </ul>
+                    </article>
+                </div>
+
+                <div className="editorialFooter">
+                    <div className="editorialHighlight">
+                        <h3>Conseils de suivi</h3>
+                        <p>
+                            Pour une expérience optimale, gardez la page ouverte et laissez le tableau se
+                            mettre à jour automatiquement. En cas de surcharge, un simple rafraîchissement
+                            suffit pour reprendre le direct.
+                        </p>
+                    </div>
+                    <div className="editorialHighlight">
+                        <h3>FAQ rapide</h3>
+                        <ul>
+                            <li>Un match absent ? Les données peuvent arriver avec quelques minutes de délai.</li>
+                            <li>Un score incohérent ? Vérifiez la minute et les statuts du match.</li>
+                            <li>Besoin d'aide ? Consultez la page Contact pour nous écrire.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
         </div>
     );
 }
