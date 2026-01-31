@@ -347,7 +347,24 @@ html, body {
     justify-items: stretch;
   }
 
+  .eventsHome,
+  .eventsAway {
+    justify-items: center;
+  }
+
   .eventRowHome {
     flex-direction: row;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .eventRowAway {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .eventRowHome .eventPlayer,
+  .eventRowAway .eventPlayer {
+    text-align: center;
   }
 }

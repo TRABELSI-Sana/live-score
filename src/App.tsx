@@ -122,6 +122,11 @@ export default function App() {
                                         const unknownEvents = events
                                             .filter((e) => sideFromEvent(e.home_away) === "unknown")
                                             .slice(0, 4);
+                                        const homeEvents = events.filter((e) => sideFromEvent(e.home_away) === "home");
+                                        const awayEvents = events.filter((e) => sideFromEvent(e.home_away) === "away");
+                                        const unknownEvents = events.filter(
+                                            (e) => sideFromEvent(e.home_away) === "unknown"
+                                        );
 
                                         const status = m.status ?? "";
                                         const isUpcoming = UPCOMING_STATUSES.has(status);
