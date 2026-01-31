@@ -102,8 +102,8 @@ export default function App() {
                                     {list.map((m, idx) => {
                                         const events = uniqBy(
                                             (m.lastEvents ?? []).filter((e) => {
-                                                const ev = (e.event ?? "").toUpperCase();
-                                                return Boolean(e.player) && Boolean(e.time) && !ev.includes("SUB");
+                                                const ev = normEvent(e.event);
+                                                return !ev.includes("SUB") && Boolean(normPlayer(e.player));
                                             }),
                                             (e) =>
                                                 [
@@ -112,16 +112,9 @@ export default function App() {
                                                     normEvent(e.event),
                                                     normPlayer(e.player),
                                                 ].join("|")
-                                        ).slice().sort((a, b) => parseMinute(b.time) - parseMinute(a.time));
-                                        const homeEvents = events
-                                            .filter((e) => sideFromEvent(e.home_away) === "home")
-                                            .slice(0, 4);
-                                        const awayEvents = events
-                                            .filter((e) => sideFromEvent(e.home_away) === "away")
-                                            .slice(0, 4);
-                                        const unknownEvents = events
-                                            .filter((e) => sideFromEvent(e.home_away) === "unknown")
-                                            .slice(0, 4);
+                                        )
+                                            .slice()
+                                            .sort((a, b) => parseMinute(b.time) - parseMinute(a.time));
                                         const homeEvents = events.filter((e) => sideFromEvent(e.home_away) === "home");
                                         const awayEvents = events.filter((e) => sideFromEvent(e.home_away) === "away");
                                         const unknownEvents = events.filter(
