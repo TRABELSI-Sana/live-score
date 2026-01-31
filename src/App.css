@@ -334,17 +334,16 @@ html, body {
   }
 
   .eventsGrid {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr);
     gap: 10px;
   }
 
   .eventsCenter {
     display: grid;
-    grid-column: 1 / -1;
   }
 
   .eventsColumn {
-    justify-items: stretch;
+    justify-items: center;
   }
 
   .eventRowHome {
