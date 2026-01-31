@@ -197,48 +197,63 @@ html, body {
   color: #222;
 }
 
-.events {
+.eventsGrid {
   margin-top: 10px;
   display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(86px, auto) minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+  width: 100%;
+}
+
+.eventsCenter {
+  width: 100%;
+  justify-items: center;
+}
+
+.eventsColumn {
+  display: grid;
   gap: 6px;
-  justify-content: center;
+  min-width: 0;
+  width: 100%;
+}
+
+.eventsHome {
+  justify-items: end;
+}
+
+.eventsAway {
+  justify-items: start;
 }
 
 .eventRow {
-  display: grid;
-  grid-template-columns: minmax(0, 110px) 40px 18px 1fr;
-  gap: 8px;
-  align-items: center;
-  font-size: 12px;
-  color: var(--muted);
-  max-width: 320px;
-}
-
-.eventTeam {
   display: flex;
   align-items: center;
   gap: 6px;
+  font-size: 12px;
+  color: var(--muted);
   min-width: 0;
+  max-width: 100%;
 }
 
-.eventTeamLogo {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  border: 1px solid var(--border);
-  object-fit: contain;
-  background: var(--soft);
+.eventRowHome {
+  justify-content: flex-end;
+  text-align: right;
+  flex-direction: row-reverse;
 }
 
-.eventTeamName {
-  font-size: 11px;
-  color: #3a3a3a;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.eventRowAway {
+  justify-content: flex-start;
+  text-align: left;
+}
+
+.eventRowCenter {
+  justify-content: center;
+  text-align: center;
 }
 
 .eventMinute {
+  min-width: 34px;
   text-align: right;
   font-weight: 600;
   color: #222;
@@ -249,8 +264,23 @@ html, body {
 }
 
 .eventPlayer {
-  text-align: left;
   color: #222;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.eventRowHome .eventPlayer {
+  text-align: right;
+}
+
+.eventRowAway .eventPlayer {
+  text-align: left;
+}
+
+.eventRowCenter .eventPlayer {
+  text-align: center;
 }
 
 .empty {
@@ -303,11 +333,38 @@ html, body {
     min-width: 140px;
   }
 
-  .events {
+  .eventsGrid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .eventsCenter {
+    display: grid;
+    grid-column: 1 / -1;
+  }
+
+  .eventsColumn {
+    justify-items: stretch;
+  }
+
+  .eventsHome,
+  .eventsAway {
     justify-items: center;
   }
 
-  .eventRow {
-    grid-template-columns: minmax(0, 90px) 36px 18px 1fr;
+  .eventRowHome {
+    flex-direction: row;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .eventRowAway {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .eventRowHome .eventPlayer,
+  .eventRowAway .eventPlayer {
+    text-align: center;
   }
 }
