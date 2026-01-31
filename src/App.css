@@ -334,3 +334,64 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.4px;
 }
+
+/* ===== Info section ===== */
+.infoSection {
+  margin-top: 16px;
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+  box-shadow: var(--shadow);
+}
+
+.infoHeader h1 {
+  margin: 0 0 6px;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.infoHeader p {
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-size: 13px;
+  max-width: 820px;
+}
+
+.infoGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.infoCard {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  background: rgba(0,0,0,0.18);
+}
+
+.infoCard h2 {
+  margin: 0 0 6px;
+  font-size: 14px;
+}
+
+.infoCard p,
+.infoCard li {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.infoCard ul {
+  margin: 0;
+  padding-left: 16px;
+}
+
+@media (max-width: 1100px) {
+  .infoGrid { grid-template-columns: repeat(2, minmax(220px, 1fr)); }
+}
+
+@media (max-width: 720px) {
+  .infoGrid { grid-template-columns: 1fr; }
+}
