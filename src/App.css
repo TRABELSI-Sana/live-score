@@ -200,13 +200,13 @@ html, body {
 .eventsGrid {
   margin-top: 10px;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 86px) minmax(0, 1fr);
   gap: 14px;
   align-items: start;
 }
 
 .eventsCenter {
-  width: 86px;
+  justify-items: center;
 }
 
 .eventsColumn {
@@ -235,6 +235,11 @@ html, body {
   text-align: left;
 }
 
+.eventRowCenter {
+  justify-content: center;
+  text-align: center;
+}
+
 .eventMinute {
   min-width: 34px;
   text-align: right;
@@ -259,6 +264,10 @@ html, body {
 
 .eventRowAway .eventPlayer {
   text-align: left;
+}
+
+.eventRowCenter .eventPlayer {
+  text-align: center;
 }
 
 .empty {
@@ -317,7 +326,7 @@ html, body {
   }
 
   .eventsCenter {
-    display: none;
+    display: grid;
   }
 
   .eventsColumn {

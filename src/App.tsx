@@ -57,6 +57,13 @@ function parseMinute(t: unknown): number {
     return Number.isFinite(base) ? base + added / 10 : 999;
 }
 
+function sideFromEvent(side?: unknown) {
+    const normalized = norm(side);
+    if (["home", "h", "local", "team1"].includes(normalized)) return "home";
+    if (["away", "a", "visitor", "team2"].includes(normalized)) return "away";
+    return "unknown";
+}
+
 export default function App() {
     const {grouped} = useLiveBoard();
 
@@ -110,8 +117,11 @@ export default function App() {
                                             .slice()
                                             .sort((a, b) => parseMinute(b.time) - parseMinute(a.time))
                                             .slice(0, 4);
-                                        const homeEvents = events.filter((e) => norm(e.home_away) === "home");
-                                        const awayEvents = events.filter((e) => norm(e.home_away) === "away");
+                                        const homeEvents = events.filter((e) => sideFromEvent(e.home_away) === "home");
+                                        const awayEvents = events.filter((e) => sideFromEvent(e.home_away) === "away");
+                                        const unknownEvents = events.filter(
+                                            (e) => sideFromEvent(e.home_away) === "unknown"
+                                        );
 
                                         const status = m.status ?? "";
                                         const isUpcoming = UPCOMING_STATUSES.has(status);
@@ -163,7 +173,10 @@ export default function App() {
                                                 <div className="matchMeta">
                                                     {statusLabel(m.status, m.time, m.scheduled)}
                                                 </div>
-                                                {!isUpcoming && (homeEvents.length > 0 || awayEvents.length > 0) ? (
+                                                {!isUpcoming &&
+                                                (homeEvents.length > 0 ||
+                                                    awayEvents.length > 0 ||
+                                                    unknownEvents.length > 0) ? (
                                                     <div className="eventsGrid">
                                                         <div className="eventsColumn eventsHome">
                                                             {homeEvents.map((e, eventIdx) => (
@@ -179,7 +192,20 @@ export default function App() {
                                                                 </div>
                                                             ))}
                                                         </div>
-                                                        <div className="eventsCenter" aria-hidden="true"/>
+                                                        <div className="eventsColumn eventsCenter">
+                                                            {unknownEvents.map((e, eventIdx) => (
+                                                                <div
+                                                                    key={String(e.id ?? eventIdx)}
+                                                                    className="eventRow eventRowCenter"
+                                                                >
+                                                                    <span className="eventMinute">
+                                                                        {e.time ? `${e.time}'` : ""}
+                                                                    </span>
+                                                                    <span className="eventIcon">{icon(e.event)}</span>
+                                                                    <span className="eventPlayer">{e.player ?? ""}</span>
+                                                                </div>
+                                                            ))}
+                                                        </div>
                                                         <div className="eventsColumn eventsAway">
                                                             {awayEvents.map((e, eventIdx) => (
                                                                 <div
