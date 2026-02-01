@@ -16,6 +16,7 @@ function icon(ev?: string) {
     if (ev?.includes("GOAL")) return "⚽";
     if (ev?.includes("YELLOW")) return "🟨";
     if (ev?.includes("RED")) return "🟥";
+    if (ev?.includes("MISSED_PENALTY")) return "MISSED PENALTY 🥅❌";
     return "•";
 }
 
@@ -103,7 +104,11 @@ export default function App() {
                                         const events = uniqBy(
                                             (m.lastEvents ?? []).filter((e) => {
                                                 const ev = normEvent(e.event);
-                                                return !ev.includes("SUB") && Boolean(normPlayer(e.player));
+                                                return (
+                                                    !ev.includes("SUB") &&
+                                                    !ev.includes("YELLOW") &&
+                                                    Boolean(normPlayer(e.player))
+                                                );
                                             }),
                                             (e) =>
                                                 [
