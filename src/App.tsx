@@ -1,4 +1,5 @@
 import "./App.css";
+import {useEffect, useState} from "react";
 import {useLiveBoard} from "./hooks/useLiveBoard";
 
 const UPCOMING_STATUSES = new Set(["NOT STARTED", "SCHEDULED"]);
@@ -65,8 +66,113 @@ function sideFromEvent(side?: unknown) {
     return "unknown";
 }
 
+type TableRow = {
+    rank?: number | string;
+    position?: number | string;
+    rg?: number | string;
+    place?: number | string;
+    team?: { name?: string };
+    club?: { name?: string };
+    teamName?: string;
+    name?: string;
+    points?: number | string;
+    pts?: number | string;
+    played?: number | string;
+    matchesPlayed?: number | string;
+    playedGames?: number | string;
+    diff?: number | string;
+    goalDiff?: number | string;
+    goalsDiff?: number | string;
+    goals?: { for?: number | string; against?: number | string };
+};
+
+type TableDisplayRow = {
+    rank: string;
+    team: string;
+    points: string;
+    played: string;
+    diff: string;
+};
+
+function toNumber(value: unknown): number | undefined {
+    const parsed = typeof value === "string" && value.trim() === "" ? NaN : Number(value);
+    return Number.isFinite(parsed) ? parsed : undefined;
+}
+
+function tableRowsFromData(data: unknown): TableDisplayRow[] {
+    const list = Array.isArray(data) ? data : Array.isArray((data as { table?: unknown })?.table)
+        ? ((data as { table?: unknown }).table as TableRow[])
+        : [];
+
+    return list.map((row, idx) => {
+        const rankRaw = row.rank ?? row.position ?? row.rg ?? row.place;
+        const rankNum = toNumber(rankRaw);
+        const rank = rankNum !== undefined ? String(rankNum) : String(rankRaw ?? idx + 1);
+        const team =
+            row.team?.name ??
+            row.club?.name ??
+            row.teamName ??
+            row.name ??
+            "Équipe";
+        const pointsRaw = row.points ?? row.pts;
+        const pointsNum = toNumber(pointsRaw);
+        const points = pointsNum !== undefined ? `${pointsNum}pts` : String(pointsRaw ?? "--");
+        const playedRaw = row.played ?? row.matchesPlayed ?? row.playedGames;
+        const playedNum = toNumber(playedRaw);
+        const played = playedNum !== undefined ? String(playedNum) : String(playedRaw ?? "--");
+        const diffRaw =
+            row.diff ??
+            row.goalDiff ??
+            row.goalsDiff ??
+            (toNumber(row.goals?.for) !== undefined && toNumber(row.goals?.against) !== undefined
+                ? toNumber(row.goals?.for)! - toNumber(row.goals?.against)!
+                : undefined);
+        const diffNum = toNumber(diffRaw);
+        const diff = diffNum !== undefined ? `${diffNum > 0 ? "+" : ""}${diffNum}` : String(diffRaw ?? "--");
+
+        return { rank, team, points, played, diff };
+    });
+}
+
 export default function App() {
     const {grouped} = useLiveBoard();
+    const [rankingCompetition, setRankingCompetition] = useState<{id?: string; name?: string} | null>(null);
+    const [rankingRows, setRankingRows] = useState<TableDisplayRow[]>([]);
+    const [rankingStatus, setRankingStatus] = useState<"idle" | "loading" | "error">("idle");
+
+    useEffect(() => {
+        if (!rankingCompetition) {
+            setRankingRows([]);
+            setRankingStatus("idle");
+            return;
+        }
+
+        if (!rankingCompetition.id) {
+            setRankingRows([]);
+            setRankingStatus("error");
+            return;
+        }
+
+        let cancelled = false;
+        setRankingStatus("loading");
+
+        fetch(`/api/stream/competitions/${rankingCompetition.id}/table`)
+            .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
+            .then((data) => {
+                if (cancelled) return;
+                setRankingRows(tableRowsFromData(data));
+                setRankingStatus("idle");
+            })
+            .catch(() => {
+                if (cancelled) return;
+                setRankingRows([]);
+                setRankingStatus("error");
+            });
+
+        return () => {
+            cancelled = true;
+        };
+    }, [rankingCompetition]);
 
     return (
         <div className="page">
@@ -96,7 +202,13 @@ export default function App() {
                             <div key={comp?.id ?? comp?.name ?? String(comp)} className="competition">
                                 <div className="competitionHeader">
                                     <h2>{comp?.name ?? String(comp)}</h2>
-                                    <span className="ranking">CLASSEMENT</span>
+                                    <button
+                                        type="button"
+                                        className="rankingButton"
+                                        onClick={() => setRankingCompetition({id: comp?.id, name: comp?.name})}
+                                    >
+                                        CLASSEMENT
+                                    </button>
                                 </div>
 
                                 <div className="matches">
@@ -234,6 +346,63 @@ export default function App() {
                     )}
                 </section>
             </main>
+            {rankingCompetition ? (
+                <div
+                    className="modalBackdrop"
+                    onClick={() => setRankingCompetition(null)}
+                    role="dialog"
+                    aria-modal="true"
+                >
+                    <div className="rankingModal" onClick={(e) => e.stopPropagation()}>
+                        <button
+                            type="button"
+                            className="modalClose"
+                            aria-label="Fermer le classement"
+                            onClick={() => setRankingCompetition(null)}
+                        >
+                            ×
+                        </button>
+                        <div className="rankingTitle">
+                            {rankingCompetition.name ? `Classement - ${rankingCompetition.name}` : "Classement"}
+                        </div>
+                        {rankingStatus === "loading" ? (
+                            <div className="rankingStatus">Chargement...</div>
+                        ) : null}
+                        {rankingStatus === "error" ? (
+                            <div className="rankingStatus rankingError">
+                                Classement indisponible pour le moment.
+                            </div>
+                        ) : null}
+                        {rankingStatus === "idle" && rankingRows.length > 0 ? (
+                            <table className="rankingTable">
+                                <thead>
+                                    <tr>
+                                        <th>Rg</th>
+                                        <th>Equipe</th>
+                                        <th>Pts</th>
+                                        <th>J.</th>
+                                        <th>Diff</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {rankingRows.map((row, idx) => (
+                                        <tr key={`${row.rank}-${idx}`}>
+                                            <td>{row.rank}</td>
+                                            <td>{row.team}</td>
+                                            <td>{row.points}</td>
+                                            <td>{row.played}</td>
+                                            <td>{row.diff}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        ) : null}
+                        {rankingStatus === "idle" && rankingRows.length === 0 ? (
+                            <div className="rankingStatus">Aucune donnée de classement.</div>
+                        ) : null}
+                    </div>
+                </div>
+            ) : null}
         </div>
     );
 }
