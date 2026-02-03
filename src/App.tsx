@@ -77,6 +77,7 @@ type TableRow = {
     name?: string;
     points?: number | string;
     pts?: number | string;
+    all?: { played?: number | string; goals?: { for?: number | string; against?: number | string } };
     played?: number | string;
     matchesPlayed?: number | string;
     playedGames?: number | string;
@@ -99,10 +100,43 @@ function toNumber(value: unknown): number | undefined {
     return Number.isFinite(parsed) ? parsed : undefined;
 }
 
+function extractTableRows(data: unknown): TableRow[] {
+    if (Array.isArray(data)) {
+        return data as TableRow[];
+    }
+    const candidate = data as {
+        table?: unknown;
+        response?: unknown;
+        standings?: unknown;
+        data?: unknown;
+    };
+    if (Array.isArray(candidate?.table)) {
+        return candidate.table as TableRow[];
+    }
+    if (Array.isArray(candidate?.response)) {
+        const response = candidate.response as Array<Record<string, unknown>>;
+        const fromResponseTable = response.find((entry) => Array.isArray(entry?.table))?.table;
+        if (Array.isArray(fromResponseTable)) {
+            return fromResponseTable as TableRow[];
+        }
+        const fromLeagueStandings = response
+            .map((entry) => (entry.league as { standings?: unknown })?.standings)
+            .find((standings) => Array.isArray(standings) && Array.isArray(standings[0]));
+        if (Array.isArray(fromLeagueStandings) && Array.isArray(fromLeagueStandings[0])) {
+            return fromLeagueStandings[0] as TableRow[];
+        }
+    }
+    if (Array.isArray(candidate?.standings) && Array.isArray(candidate.standings[0])) {
+        return candidate.standings[0] as TableRow[];
+    }
+    if (candidate?.data && Array.isArray((candidate.data as { table?: unknown })?.table)) {
+        return (candidate.data as { table?: TableRow[] }).table ?? [];
+    }
+    return [];
+}
+
 function tableRowsFromData(data: unknown): TableDisplayRow[] {
-    const list = Array.isArray(data) ? data : Array.isArray((data as { table?: unknown })?.table)
-        ? ((data as { table?: unknown }).table as TableRow[])
-        : [];
+    const list = extractTableRows(data);
 
     return list.map((row, idx) => {
         const rankRaw = row.rank ?? row.position ?? row.rg ?? row.place;
@@ -117,7 +151,7 @@ function tableRowsFromData(data: unknown): TableDisplayRow[] {
         const pointsRaw = row.points ?? row.pts;
         const pointsNum = toNumber(pointsRaw);
         const points = pointsNum !== undefined ? `${pointsNum}pts` : String(pointsRaw ?? "--");
-        const playedRaw = row.played ?? row.matchesPlayed ?? row.playedGames;
+        const playedRaw = row.played ?? row.matchesPlayed ?? row.playedGames ?? row.all?.played;
         const playedNum = toNumber(playedRaw);
         const played = playedNum !== undefined ? String(playedNum) : String(playedRaw ?? "--");
         const diffRaw =
@@ -126,6 +160,9 @@ function tableRowsFromData(data: unknown): TableDisplayRow[] {
             row.goalsDiff ??
             (toNumber(row.goals?.for) !== undefined && toNumber(row.goals?.against) !== undefined
                 ? toNumber(row.goals?.for)! - toNumber(row.goals?.against)!
+                : undefined) ??
+            (toNumber(row.all?.goals?.for) !== undefined && toNumber(row.all?.goals?.against) !== undefined
+                ? toNumber(row.all?.goals?.for)! - toNumber(row.all?.goals?.against)!
                 : undefined);
         const diffNum = toNumber(diffRaw);
         const diff = diffNum !== undefined ? `${diffNum > 0 ? "+" : ""}${diffNum}` : String(diffRaw ?? "--");
