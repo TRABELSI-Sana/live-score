@@ -13,6 +13,34 @@ function statusLabel(status?: string, time?: string, scheduled?: string) {
     return status;
 }
 
+function formatLocalTime(value?: string): string | undefined {
+    if (!value) return value;
+    const trimmed = value.trim();
+    let parsed = Date.parse(trimmed);
+    if (Number.isNaN(parsed)) {
+        const normalized = trimmed.replace(" ", "T");
+        if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2})?$/.test(normalized)) {
+            parsed = Date.parse(`${normalized}Z`);
+        } else if (/^\d{2}:\d{2}(:\d{2})?$/.test(normalized)) {
+            const now = new Date();
+            const [hours, minutes, seconds] = normalized.split(":").map((part) => Number(part));
+            parsed = Date.UTC(
+                now.getUTCFullYear(),
+                now.getUTCMonth(),
+                now.getUTCDate(),
+                hours,
+                minutes,
+                Number.isFinite(seconds) ? seconds : 0
+            );
+        }
+    }
+    if (Number.isNaN(parsed)) return value;
+    return new Date(parsed).toLocaleTimeString("fr-FR", {
+        hour: "2-digit",
+        minute: "2-digit",
+    });
+}
+
 function icon(ev?: string) {
     if (ev?.includes("GOAL")) return "⚽";
     if (ev?.includes("YELLOW")) return "🟨";
@@ -331,8 +359,9 @@ export default function App() {
 
                                         const status = m.status ?? "";
                                         const isUpcoming = UPCOMING_STATUSES.has(status);
+                                        const localScheduled = formatLocalTime(m.scheduled);
                                         const scoreText = isUpcoming
-                                            ? m.scheduled ?? "--:--"
+                                            ? localScheduled ?? "--:--"
                                             : m.scores?.score ?? "0 : 0";
 
                                         return (
@@ -377,7 +406,7 @@ export default function App() {
                                                     </div>
                                                 </div>
                                                 <div className="matchMeta">
-                                                    {statusLabel(m.status, m.time, m.scheduled)}
+                                                    {statusLabel(m.status, m.time, localScheduled)}
                                                 </div>
                                                 {!isUpcoming &&
                                                 (homeEvents.length > 0 ||
