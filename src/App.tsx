@@ -191,23 +191,36 @@ export default function App() {
         }
 
         let cancelled = false;
+        let retryTimer: ReturnType<typeof setTimeout> | null = null;
         setRankingStatus("loading");
 
-        fetch(`/api/stream/competitions/${rankingCompetition.id}/table`)
-            .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
-            .then((data) => {
-                if (cancelled) return;
-                setRankingRows(tableRowsFromData(data));
-                setRankingStatus("idle");
-            })
-            .catch(() => {
-                if (cancelled) return;
-                setRankingRows([]);
-                setRankingStatus("error");
-            });
+        const loadTable = (attempt = 0) => {
+            fetch(`/api/stream/competitions/${rankingCompetition.id}/table`)
+                .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
+                .then((data) => {
+                    if (cancelled) return;
+                    const rows = tableRowsFromData(data);
+                    if (rows.length === 0 && attempt < 2) {
+                        retryTimer = setTimeout(() => loadTable(attempt + 1), 1000);
+                        return;
+                    }
+                    setRankingRows(rows);
+                    setRankingStatus("idle");
+                })
+                .catch(() => {
+                    if (cancelled) return;
+                    setRankingRows([]);
+                    setRankingStatus("error");
+                });
+        };
+
+        loadTable();
 
         return () => {
             cancelled = true;
+            if (retryTimer) {
+                clearTimeout(retryTimer);
+            }
         };
     }, [rankingCompetition]);
 
