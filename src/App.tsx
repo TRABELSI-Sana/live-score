@@ -109,6 +109,7 @@ function extractTableRows(data: unknown): TableRow[] {
         response?: unknown;
         standings?: unknown;
         data?: unknown;
+        stages?: unknown;
     };
     if (Array.isArray(candidate?.table)) {
         return candidate.table as TableRow[];
@@ -126,11 +127,51 @@ function extractTableRows(data: unknown): TableRow[] {
             return fromLeagueStandings[0] as TableRow[];
         }
     }
+    if (Array.isArray(candidate?.stages)) {
+        const stages = candidate.stages as Array<Record<string, unknown>>;
+        for (const stage of stages) {
+            const groups = stage.groups as Array<Record<string, unknown>> | undefined;
+            if (!Array.isArray(groups)) continue;
+            const fromStageGroupStandings = groups.find((entry) => Array.isArray(entry?.standings))?.standings;
+            if (Array.isArray(fromStageGroupStandings)) {
+                return fromStageGroupStandings as TableRow[];
+            }
+        }
+    }
     if (Array.isArray(candidate?.standings) && Array.isArray(candidate.standings[0])) {
         return candidate.standings[0] as TableRow[];
     }
-    if (candidate?.data && Array.isArray((candidate.data as { table?: unknown })?.table)) {
-        return (candidate.data as { table?: TableRow[] }).table ?? [];
+    if (candidate?.data) {
+        const dataNode = candidate.data as {
+            table?: unknown;
+            groups?: unknown;
+            stages?: unknown;
+            standings?: unknown;
+        };
+        if (Array.isArray(dataNode?.table)) {
+            return dataNode.table as TableRow[];
+        }
+        if (Array.isArray(dataNode?.groups)) {
+            const dataGroups = dataNode.groups as Array<Record<string, unknown>>;
+            const fromDataGroupStandings = dataGroups.find((entry) => Array.isArray(entry?.standings))?.standings;
+            if (Array.isArray(fromDataGroupStandings)) {
+                return fromDataGroupStandings as TableRow[];
+            }
+        }
+        if (Array.isArray(dataNode?.stages)) {
+            const stages = dataNode.stages as Array<Record<string, unknown>>;
+            for (const stage of stages) {
+                const groups = stage.groups as Array<Record<string, unknown>> | undefined;
+                if (!Array.isArray(groups)) continue;
+                const fromStageGroupStandings = groups.find((entry) => Array.isArray(entry?.standings))?.standings;
+                if (Array.isArray(fromStageGroupStandings)) {
+                    return fromStageGroupStandings as TableRow[];
+                }
+            }
+        }
+        if (Array.isArray(dataNode?.standings) && Array.isArray(dataNode.standings[0])) {
+            return dataNode.standings[0] as TableRow[];
+        }
     }
     return [];
 }
