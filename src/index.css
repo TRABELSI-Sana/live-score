@@ -29,7 +29,7 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  background: radial-gradient(1200px 600px at 20% 0%, #152545 0%, #0b1220 55%, #070b14 100%);
+  background: radial-gradient(1200px 600px at 20% 0%, #1f3a2a 0%, #0d1c14 55%, #060c09 100%);
 }
 
 .page-layout {
@@ -81,7 +81,7 @@ body {
   padding: 6px 10px;
   border-radius: 999px;
   border: 1px solid var(--border);
-  background: #f0f0f0;
+  background: #f1f6f0;
   color: var(--text);
 }
 

@@ -1,13 +1,13 @@
 :root {
-  --teal: #1bb5a2;
-  --teal-dark: #0f6e65;
-  --coral: #ff7a59;
-  --text: #1f2328;
-  --muted: #5f6b7a;
-  --border: #e2e6ef;
-  --soft: #f7f8fb;
+  --teal: #86c56c;
+  --teal-dark: #4e7c3a;
+  --coral: #cfe678;
+  --text: #1e2a22;
+  --muted: #5a6a5d;
+  --border: #d6e2d2;
+  --soft: #f2f7f1;
   --panel: #ffffff;
-  --panel-2: #edf6f5;
+  --panel-2: #eaf4e6;
 }
 
 *, *::before, *::after {
@@ -19,7 +19,7 @@ html, body {
   padding: 0;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   color: var(--text);
-  background: #f5f5f2;
+  background: #f2f5f0;
 }
 
 .page {
@@ -87,7 +87,7 @@ html, body {
 
 .logoLight {
   font-weight: 400;
-  color: #8a8f99;
+  color: #7a8b79;
 }
 
 .heroSubtitle {
@@ -129,8 +129,8 @@ html, body {
 }
 
 .statCardLive {
-  border-color: rgba(27, 181, 162, 0.4);
-  background: #effaf7;
+  border-color: rgba(134, 197, 108, 0.4);
+  background: #eef7eb;
 }
 
 .statValue {
@@ -204,7 +204,7 @@ html, body {
   gap: 8px;
   font-size: 14px;
   font-weight: 500;
-  color: #2c3645;
+  color: #243329;
 }
 
 .teamHome {
@@ -242,7 +242,7 @@ html, body {
 }
 
 .scoreBoxUpcoming {
-  background: #b5b9c6;
+  background: #b4c0b2;
 }
 
 .matchMeta {
@@ -250,7 +250,7 @@ html, body {
   text-align: center;
   font-size: 12px;
   font-weight: 600;
-  color: #222;
+  color: #27352c;
 }
 
 .eventsGrid {
@@ -316,7 +316,7 @@ html, body {
   min-width: 34px;
   text-align: right;
   font-weight: 600;
-  color: #222;
+  color: #27352c;
 }
 
 .eventIcon {
@@ -324,7 +324,7 @@ html, body {
 }
 
 .eventPlayer {
-  color: #222;
+  color: #27352c;
   min-width: 0;
   white-space: nowrap;
   overflow: hidden;
@@ -384,7 +384,7 @@ html, body {
   padding: 6px 10px;
   border-radius: 999px;
   border: 1px solid var(--border);
-  background: #fff;
+  background: #f7faf6;
   color: var(--text);
 }
 
