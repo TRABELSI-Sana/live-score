@@ -303,53 +303,41 @@ export default function App() {
     return (
         <div className="page">
             <header className="hero">
+                <div className="heroBadge">Scores en direct</div>
                 <div className="logoRow">
                     <div className="logoMark" aria-hidden="true">
                         <span className="logoPulse"/>
                     </div>
                     <div className="logoText">
                         <span className="logoStrong">LiveFoot</span>
-                        <span className="logoLight">pulse</span>
+                        <span className="logoLight">tempo</span>
                     </div>
                 </div>
                 <p className="heroSubtitle">
-                    La lecture rapide des matchs du jour, avec des statuts clairs et des temps locaux.
+                    Le tableau du jour : scores, statuts clairs et horaires locaux pour suivre les matchs
+                    d&apos;un coup d&apos;œil.
                 </p>
             </header>
 
             <main className="content">
-                <aside className="infoPanel">
-                    <div className="infoCard">
-                        <p className="infoTitle">Aperçu du direct</p>
-                        <div className="infoStats">
-                            <div>
-                                <span className="infoValue">{allMatches.length}</span>
-                                <span className="infoLabel">Rencontres</span>
-                            </div>
-                            <div>
-                                <span className="infoValue infoValueLive">{liveMatches.length}</span>
-                                <span className="infoLabel">En cours</span>
-                            </div>
-                            <div>
-                                <span className="infoValue">{upcomingMatches.length}</span>
-                                <span className="infoLabel">À venir</span>
-                            </div>
-                            <div>
-                                <span className="infoValue">{finishedMatches.length}</span>
-                                <span className="infoLabel">Terminés</span>
-                            </div>
-                        </div>
+                <section className="statsRow">
+                    <div className="statCard">
+                        <span className="statValue">{allMatches.length}</span>
+                        <span className="statLabel">Matchs listés</span>
                     </div>
-                    <div className="infoCard">
-                        <p className="infoTitle">Zoom sur la journée</p>
-                        <ul className="infoList">
-                            <li>Classements accessibles depuis chaque compétition.</li>
-                            <li>Événements clés ordonnés par minute.</li>
-                            <li>Heures localisées automatiquement.</li>
-                        </ul>
-                        <div className="infoFooter">Mise à jour continue toutes les 30 secondes.</div>
+                    <div className="statCard statCardLive">
+                        <span className="statValue">{liveMatches.length}</span>
+                        <span className="statLabel">En cours</span>
                     </div>
-                </aside>
+                    <div className="statCard">
+                        <span className="statValue">{upcomingMatches.length}</span>
+                        <span className="statLabel">À venir</span>
+                    </div>
+                    <div className="statCard">
+                        <span className="statValue">{finishedMatches.length}</span>
+                        <span className="statLabel">Terminés</span>
+                    </div>
+                </section>
                 <section className="board">
                     {grouped.length === 0 ? (
                         <div className="empty">
@@ -506,6 +494,15 @@ export default function App() {
                     )}
                 </section>
             </main>
+            <footer className="siteFooter">
+                <div className="footerLinks">
+                    <a href="/about.html">À propos</a>
+                    <a href="/privacy.html">Politique de confidentialité</a>
+                    <a href="/terms.html">Conditions</a>
+                    <a href="/contact.html">Contact</a>
+                </div>
+                <span className="footerNote">© 2005-2026 LiveFoot - Tous droits réservés.</span>
+            </footer>
             {rankingCompetition ? (
                 <div
                     className="modalBackdrop"
