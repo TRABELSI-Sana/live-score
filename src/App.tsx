@@ -245,6 +245,13 @@ export default function App() {
     const [rankingCompetition, setRankingCompetition] = useState<{id?: string; name?: string} | null>(null);
     const [rankingRows, setRankingRows] = useState<TableDisplayRow[]>([]);
     const [rankingStatus, setRankingStatus] = useState<"idle" | "loading" | "error">("idle");
+    const allMatches = grouped.flatMap((group) => group.list ?? []);
+    const liveMatches = allMatches.filter((match) => {
+        const status = String(match.status ?? "").toUpperCase();
+        return status === "IN PLAY" || status === "ADDED TIME";
+    });
+    const upcomingMatches = allMatches.filter((match) => UPCOMING_STATUSES.has(match.status ?? ""));
+    const finishedMatches = allMatches.filter((match) => String(match.status ?? "") === "FINISHED");
 
     useEffect(() => {
         if (!rankingCompetition) {
@@ -297,19 +304,52 @@ export default function App() {
         <div className="page">
             <header className="hero">
                 <div className="logoRow">
-                    <div className="logoBall" aria-hidden="true"/>
+                    <div className="logoMark" aria-hidden="true">
+                        <span className="logoPulse"/>
+                    </div>
                     <div className="logoText">
                         <span className="logoStrong">LiveFoot</span>
-                        <span className="logoLight">scores</span>
+                        <span className="logoLight">pulse</span>
                     </div>
                 </div>
                 <p className="heroSubtitle">
-                    Suivez les matchs en temps réel : scores, buteurs et événements clés des rencontres en
-                    cours.
+                    La lecture rapide des matchs du jour, avec des statuts clairs et des temps locaux.
                 </p>
             </header>
 
             <main className="content">
+                <aside className="infoPanel">
+                    <div className="infoCard">
+                        <p className="infoTitle">Aperçu du direct</p>
+                        <div className="infoStats">
+                            <div>
+                                <span className="infoValue">{allMatches.length}</span>
+                                <span className="infoLabel">Rencontres</span>
+                            </div>
+                            <div>
+                                <span className="infoValue infoValueLive">{liveMatches.length}</span>
+                                <span className="infoLabel">En cours</span>
+                            </div>
+                            <div>
+                                <span className="infoValue">{upcomingMatches.length}</span>
+                                <span className="infoLabel">À venir</span>
+                            </div>
+                            <div>
+                                <span className="infoValue">{finishedMatches.length}</span>
+                                <span className="infoLabel">Terminés</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="infoCard">
+                        <p className="infoTitle">Zoom sur la journée</p>
+                        <ul className="infoList">
+                            <li>Classements accessibles depuis chaque compétition.</li>
+                            <li>Événements clés ordonnés par minute.</li>
+                            <li>Heures localisées automatiquement.</li>
+                        </ul>
+                        <div className="infoFooter">Mise à jour continue toutes les 30 secondes.</div>
+                    </div>
+                </aside>
                 <section className="board">
                     {grouped.length === 0 ? (
                         <div className="empty">
