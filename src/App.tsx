@@ -107,9 +107,9 @@ type TableRow = {
     pts?: number | string;
     all?: { played?: number | string; goals?: { for?: number | string; against?: number | string } };
     played?: number | string;
-    matchesPlayed?: number | string;
+    matches?: number | string;
     playedGames?: number | string;
-    diff?: number | string;
+    goal_diff?: number | string;
     goalDiff?: number | string;
     goalsDiff?: number | string;
     goals?: { for?: number | string; against?: number | string };
@@ -220,11 +220,11 @@ function tableRowsFromData(data: unknown): TableDisplayRow[] {
         const pointsRaw = row.points ?? row.pts;
         const pointsNum = toNumber(pointsRaw);
         const points = pointsNum !== undefined ? `${pointsNum}pts` : String(pointsRaw ?? "--");
-        const playedRaw = row.played ?? row.matchesPlayed ?? row.playedGames ?? row.all?.played;
+        const playedRaw = row.played ?? row.matches ?? row.playedGames ?? row.all?.played;
         const playedNum = toNumber(playedRaw);
         const played = playedNum !== undefined ? String(playedNum) : String(playedRaw ?? "--");
         const diffRaw =
-            row.diff ??
+            row.goal_diff ??
             row.goalDiff ??
             row.goalsDiff ??
             (toNumber(row.goals?.for) !== undefined && toNumber(row.goals?.against) !== undefined
