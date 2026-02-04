@@ -3,7 +3,7 @@
   line-height: 1.5;
   font-weight: 400;
   color: rgba(255, 255, 255, 0.92);
-  background-color: #0b1220;
+  background-color: #0b1024;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -22,14 +22,14 @@ a {
 }
 
 a:hover {
-  color: #38bdf8;
+  color: #a5b4fc;
 }
 
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  background: radial-gradient(1200px 600px at 20% 0%, #1f3a2a 0%, #0d1c14 55%, #060c09 100%);
+  background: radial-gradient(1200px 600px at 20% 0%, #2b2a5a 0%, #151733 55%, #0a0c1a 100%);
 }
 
 .page-layout {
@@ -81,7 +81,7 @@ body {
   padding: 6px 10px;
   border-radius: 999px;
   border: 1px solid var(--border);
-  background: #f1f6f0;
+  background: #eef0ff;
   color: var(--text);
 }
 

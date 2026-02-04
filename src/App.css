@@ -1,13 +1,13 @@
 :root {
-  --teal: #86c56c;
-  --teal-dark: #4e7c3a;
-  --coral: #cfe678;
-  --text: #1e2a22;
-  --muted: #5a6a5d;
-  --border: #d6e2d2;
-  --soft: #f2f7f1;
+  --teal: #6366f1;
+  --teal-dark: #4338ca;
+  --coral: #a855f7;
+  --text: #1b1b2d;
+  --muted: #5b5e76;
+  --border: #d8daf4;
+  --soft: #eef0ff;
   --panel: #ffffff;
-  --panel-2: #eaf4e6;
+  --panel-2: #e8e9ff;
 }
 
 *, *::before, *::after {
@@ -19,7 +19,7 @@ html, body {
   padding: 0;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   color: var(--text);
-  background: #f2f5f0;
+  background: #f2f3ff;
 }
 
 .page {
@@ -87,7 +87,7 @@ html, body {
 
 .logoLight {
   font-weight: 400;
-  color: #7a8b79;
+  color: #6b6e8b;
 }
 
 .heroSubtitle {
@@ -123,14 +123,14 @@ html, body {
   border: 1px solid var(--border);
   border-radius: 16px;
   padding: 16px 18px;
-  box-shadow: 0 10px 24px rgba(20, 30, 45, 0.08);
+  box-shadow: 0 10px 24px rgba(30, 38, 80, 0.08);
   display: grid;
   gap: 6px;
 }
 
 .statCardLive {
-  border-color: rgba(134, 197, 108, 0.4);
-  background: #eef7eb;
+  border-color: rgba(99, 102, 241, 0.35);
+  background: #eff0ff;
 }
 
 .statValue {
@@ -242,7 +242,7 @@ html, body {
 }
 
 .scoreBoxUpcoming {
-  background: #b4c0b2;
+  background: #b8bbd8;
 }
 
 .matchMeta {
@@ -250,7 +250,7 @@ html, body {
   text-align: center;
   font-size: 12px;
   font-weight: 600;
-  color: #27352c;
+  color: #2a2d4d;
 }
 
 .eventsGrid {
@@ -316,7 +316,7 @@ html, body {
   min-width: 34px;
   text-align: right;
   font-weight: 600;
-  color: #27352c;
+  color: #2a2d4d;
 }
 
 .eventIcon {
@@ -324,7 +324,7 @@ html, body {
 }
 
 .eventPlayer {
-  color: #27352c;
+  color: #2a2d4d;
   min-width: 0;
   white-space: nowrap;
   overflow: hidden;
@@ -384,7 +384,7 @@ html, body {
   padding: 6px 10px;
   border-radius: 999px;
   border: 1px solid var(--border);
-  background: #f7faf6;
+  background: #f4f5ff;
   color: var(--text);
 }
 
@@ -427,7 +427,7 @@ html, body {
   font-size: 20px;
   line-height: 1;
   cursor: pointer;
-  box-shadow: 0 6px 16px rgba(15, 110, 101, 0.35);
+  box-shadow: 0 6px 16px rgba(67, 56, 202, 0.35);
 }
 
 .rankingTitle {
