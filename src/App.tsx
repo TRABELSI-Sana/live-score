@@ -360,15 +360,30 @@ export default function App() {
 
                                 <div className="matches">
                                     {list.map((m, idx) => {
+                                        const filteredEvents = (m.lastEvents ?? []).filter((e) => {
+                                            const ev = normEvent(e.event);
+                                            return !ev.includes("SUB") && !ev.includes("YELLOW");
+                                        });
+                                        const mergedEvents = new Map<string, (typeof filteredEvents)[number]>();
+                                        for (const e of filteredEvents) {
+                                            const key = [
+                                                norm(e.home_away),
+                                                String(parseMinute(e.time)),
+                                                normEvent(e.event),
+                                            ].join("|");
+                                            const existing = mergedEvents.get(key);
+                                            if (!existing) {
+                                                mergedEvents.set(key, e);
+                                                continue;
+                                            }
+                                            const existingPlayer = normPlayer(existing.player);
+                                            const nextPlayer = normPlayer(e.player);
+                                            if (!existingPlayer && nextPlayer) {
+                                                mergedEvents.set(key, e);
+                                            }
+                                        }
                                         const events = uniqBy(
-                                            (m.lastEvents ?? []).filter((e) => {
-                                                const ev = normEvent(e.event);
-                                                return (
-                                                    !ev.includes("SUB") &&
-                                                    !ev.includes("YELLOW") &&
-                                                    Boolean(normPlayer(e.player))
-                                                );
-                                            }),
+                                            Array.from(mergedEvents.values()),
                                             (e) =>
                                                 [
                                                     norm(e.home_away),
