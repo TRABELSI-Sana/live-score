@@ -1,13 +1,13 @@
 :root {
   --teal: #6366f1;
-  --teal-dark: #4338ca;
-  --coral: #a855f7;
-  --text: #1b1b2d;
-  --muted: #5b5e76;
-  --border: #d8daf4;
-  --soft: #eef0ff;
+  --teal-dark: #312e81;
+  --coral: #8b5cf6;
+  --text: #1d1b2f;
+  --muted: #6b6f8c;
+  --border: #d9ddf6;
+  --soft: #f1f3ff;
   --panel: #ffffff;
-  --panel-2: #e8e9ff;
+  --panel-2: #e9edff;
 }
 
 *, *::before, *::after {
@@ -19,7 +19,7 @@ html, body {
   padding: 0;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   color: var(--text);
-  background: #f2f3ff;
+  background: #f5f6ff;
 }
 
 .page {
@@ -87,7 +87,7 @@ html, body {
 
 .logoLight {
   font-weight: 400;
-  color: #6b6e8b;
+  color: #7b7fa3;
 }
 
 .heroSubtitle {
@@ -123,14 +123,14 @@ html, body {
   border: 1px solid var(--border);
   border-radius: 16px;
   padding: 16px 18px;
-  box-shadow: 0 10px 24px rgba(30, 38, 80, 0.08);
+  box-shadow: 0 12px 28px rgba(41, 45, 86, 0.12);
   display: grid;
   gap: 6px;
 }
 
 .statCardLive {
-  border-color: rgba(99, 102, 241, 0.35);
-  background: #eff0ff;
+  border-color: rgba(99, 102, 241, 0.4);
+  background: #eef0ff;
 }
 
 .statValue {
@@ -204,7 +204,7 @@ html, body {
   gap: 8px;
   font-size: 14px;
   font-weight: 500;
-  color: #243329;
+  color: #2b2e4a;
 }
 
 .teamHome {
@@ -242,7 +242,7 @@ html, body {
 }
 
 .scoreBoxUpcoming {
-  background: #b8bbd8;
+  background: #c5c8e6;
 }
 
 .matchMeta {
@@ -250,7 +250,7 @@ html, body {
   text-align: center;
   font-size: 12px;
   font-weight: 600;
-  color: #2a2d4d;
+  color: #34375b;
 }
 
 .eventsGrid {
@@ -316,7 +316,7 @@ html, body {
   min-width: 34px;
   text-align: right;
   font-weight: 600;
-  color: #2a2d4d;
+  color: #34375b;
 }
 
 .eventIcon {
@@ -324,7 +324,7 @@ html, body {
 }
 
 .eventPlayer {
-  color: #2a2d4d;
+  color: #34375b;
   min-width: 0;
   white-space: nowrap;
   overflow: hidden;
@@ -384,7 +384,7 @@ html, body {
   padding: 6px 10px;
   border-radius: 999px;
   border: 1px solid var(--border);
-  background: #f4f5ff;
+  background: #f5f6ff;
   color: var(--text);
 }
 
